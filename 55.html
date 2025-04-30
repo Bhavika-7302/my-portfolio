@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<title> Inheritance  </title>
+<body>
+    <script>
+ function Person(a, b) 
+     {
+        this.name = a;
+        this.email = b;
+      }
+
+function Student(a, b, c)
+ {
+        Person.call(this, a, b); 
+        this.marks = c;
+}
+      var stu = new Student("Moses", "moses@gmail.com", 79);
+      console.log(stu);
+    </script>
+</body>
+</html>

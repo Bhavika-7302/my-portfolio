@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<title> Object.keys </title>
+<body>
+<script>
+function Student(a,b,c)
+{
+this.id=a;
+this.sname=b;
+this.marks=c;
+this.res=function()
+{
+if(this.marks>=35)
+{
+return "Pass";
+}
+else
+{
+return "False";
+}
+};
+}
+var stu= new Student(1,"Moses",99);
+console.log(stu);
+var keys=Object.keys(stu);
+console.log(keys);
+for(var i=0; i<keys.length; i++)
+{
+console.log(stu[keys[i]]);
+}
+</script>
+</body>
+</html>

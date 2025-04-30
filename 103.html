@@ -1,0 +1,30 @@
+<html>
+    <body>
+        <script>
+            let person = {
+                firstName: 'Alice',
+                lastName: 'Johnson',
+                age: 30,
+                greet: function() {
+                  console.log('Hello, ' + this.firstName + ' ' + this.lastName);
+                },
+              
+                updateAge: function(newAge) {
+                  this.age = newAge;
+                  console.log('Updated age: ' + this.age);
+                }
+              };
+              
+              console.log(person.firstName); 
+              console.log(person['lastName']); 
+              
+              person.greet(); 
+              person.updateAge(31); 
+              
+              console.log(Object.keys(person)); 
+              console.log(Object.values(person)); 
+              console.log(Object.entries(person)); 
+              
+        </script>
+    </body>
+</html>

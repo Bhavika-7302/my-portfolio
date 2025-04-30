@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+<title> keypress event alphabet </title>
+</head>
+<body>
+<h1> Alphabet only </h1>
+<input type="text" id=txt1>
+<script>
+document.getElementById("txt1").addEventListener("keypress",fun1);
+function fun1()
+{
+var ch=event.which;
+console.log(ch);
+if(!((ch>=65 && ch<=90) || (ch>=97 && ch<=122) || (ch==32) || (ch==8) || (ch==0)))
+{
+event.preventDefault();
+}
+}
+</script>
+</body>
+</html>

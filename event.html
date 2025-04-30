@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Events Example</title>
+    <style>
+        /* Basic styles */
+        #myButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #myButton:hover {
+            background-color: #45a049;
+        }
+
+        #message {
+            font-size: 18px;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Event Handling Example</h1>
+    <button id="myButton">Click Me!</button>
+    <p id="message">You clicked the button!</p>
+
+    <script>
+        // Get references to the elements
+        var button = document.getElementById('myButton');
+        var message = document.getElementById('message');
+
+        // Add click event listener to the button
+        button.addEventListener('click', function() {
+            message.style.display = 'block'; // Display the message when clicked
+        });
+
+        // Add mouseover event to change button color
+        button.addEventListener('mouseover', function() {
+            button.style.backgroundColor = '#3e8e41'; // Change to a darker green on hover
+        });
+
+        // Add mouseout event to reset button color
+        button.addEventListener('mouseout', function() {
+            button.style.backgroundColor = '#4CAF50'; // Reset the original color
+        });
+    </script>
+
+</body>
+</html>

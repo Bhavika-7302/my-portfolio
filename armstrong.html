@@ -1,0 +1,25 @@
+<html>
+<head>
+    <title>palindrome</title>
+</head>
+<body>
+    <script>
+        n=153,r=0,s=0;
+        temp=n;
+        while(n>0)
+        {
+                r=n%10;
+                s=s+(r*r*r);
+                n=n/10;
+        }
+        if(s==temp)
+        {
+            console.log("Armstrong");
+        }
+        else
+        {
+            console.log("not armstrong");
+        }
+    </script>
+</body>
+</html>

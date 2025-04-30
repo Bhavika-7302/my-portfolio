@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+<title> mouse move </title>
+<style>
+#div1
+{
+background-color:lightgreen;
+width:400px;
+height:200px;
+}
+</style>
+</head>
+<body>
+<h1> mouse move </h1>
+<div id="div1"> mouse move </div>
+<script>
+document.getElementById("div1").addEventListener("mousemove",fun1);
+function fun1()
+{
+var x=event.pageX;
+var y=event.pageY;
+console.log(x+","+y);
+}
+</script>
+</body>
+</html>

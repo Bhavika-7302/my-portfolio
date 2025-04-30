@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>copy,cut,paste</title>
+    </head>
+    <body>
+        <h1>copy,cut,paste</h1>
+        <input type="text">
+        <input type="text">
+        <input type="text">
+        <script>
+            window.addEventListener("cut",fun1);
+            window.addEventListener("copy",fun1);
+            window.addEventListener("paste",fun1);
+            function fun1(event){
+                event.preventDefault();
+                alert("cut,copy,paste not allowed");
+                }
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Compare Three Numbers</title>
+</head>
+<body>
+
+  <h2>Compare Three Numbers</h2>
+
+  <label>Enter a: <input type="number" id="a" autocomplete="off"></label><br><br>
+  <label>Enter b: <input type="number" id="b"></label><br><br>
+  <label>Enter c: <input type="number" id="c"></label><br><br>
+
+  <button onclick="compareNumbers()">Compare</button>
+
+  <h3 id="result"></h3>
+
+  <script>
+    function compareNumbers() {
+      let a = parseFloat(document.getElementById("a").value);
+      let b = parseFloat(document.getElementById("b").value);
+      let c = parseFloat(document.getElementById("c").value);
+      let result = "";
+
+      if (a > b && a > c) {
+        result = "a is the biggest: " + a;
+      } else if (b > a && b > c) {
+        result = "b is the biggest: " + b;
+      } else if (c > a && c > b) {
+        result = "c is the biggest: " + c;
+      } else if (a === b && a === c) {
+        result = "All numbers are equal";
+      } else {
+        result = "Two numbers are equal and biggest";
+      }
+
+      // DOM Manipulation
+      document.getElementById("result").textContent = result;
+    }
+  </script>
+
+</body>
+</html>

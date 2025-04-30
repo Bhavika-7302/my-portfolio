@@ -1,0 +1,29 @@
+<html>
+<head>
+  <title>Vowels or consonants</title>
+</head>
+  <body>
+    <script>
+      let char = prompt("Enter a letter:");
+
+      char = char.toLowerCase();
+
+      switch (char) {
+        case 'a':
+        case 'e':
+        case 'i':
+        case 'o':
+        case 'u':
+          alert(char + " is a vowel.");
+          break;
+        default:
+          if (char.match(/[a-z]/)) {
+            alert(char + " is a consonant.");
+          } else {
+            alert("Please enter a valid letter.");
+          }
+          break;
+      }
+    </script>
+  </body>
+</html>

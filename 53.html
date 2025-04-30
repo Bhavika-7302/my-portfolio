@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<title> Object Array  </title>
+<body>
+<script>
+function Employee(a,b,c)
+{
+this.empid=a;
+this.empname=b;
+this.empsalary=c;
+}
+var employees=
+[
+new Employee(101,"Swapna",5000),
+new Employee(102,"Sasya",7000),
+new Employee(103,"Lasya",9000),
+new Employee(104,"Moses",10000)
+];
+console.log(employees);
+for(var i=0;i<employees.length;i++)
+{
+console.log(employees[i]);
+}
+</script>
+</body>
+</html>

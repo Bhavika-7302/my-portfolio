@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<title> constructor function </title>
+<body>
+<script>
+function Student(a,b,c)
+{
+this.id=a;
+this.sname=b;
+this.marks=c;
+this.res=function()
+{
+if(this.marks>=35)
+{
+return "Pass";
+}
+else
+{
+return "False";
+}
+};
+}
+var stu= new Student(1,"Moses",99);
+console.log(stu);
+console.log(stu.id);
+console.log(stu.name);
+console.log(stu.marks);
+console.log(stu.res()); 
+</script>
+</body>
+</html>
+
+

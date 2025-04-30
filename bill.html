@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retail Sales Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+    .card {
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+    .card-header {
+      background-color: #212529;
+      color: white;
+      border-radius: 10px 10px 0 0 !important;
+      padding: 15px;
+    }
+    .btn-add {
+      background-color: #0d6efd;
+      color: white;
+    }
+    .btn-print {
+      background-color: #6c757d;
+      color: white;
+    }
+    .payment-btn {
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    .cash-btn {
+      background-color: #198754;
+    }
+    .upi-btn {
+      background-color: #0dcaf0;
+    }
+    .card-btn {
+      background-color: #ffc107;
+      color: #212529;
+    }
+    .table-header {
+      background-color: #212529;
+      color: white;
+    }
+    .total-amount {
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-align: right;
+      margin: 15px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container py-4">
+    <h1 class="text-center mb-4">Retail Sales Dashboard</h1>
+    
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">New Sale</h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead class="table-header">
+                  <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody id="product-table">
+                  <!-- Products will be added here dynamically -->
+                </tbody>
+              </table>
+            </div>
+            
+            <div class="total-amount">
+              Total: <span id="total-amount">0.00</span> ₹
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-5">
+                <input type="text" id="product-name" class="form-control" placeholder="Product name">
+              </div>
+              <div class="col-md-3">
+                <input type="number" id="product-price" class="form-control" placeholder="Price">
+              </div>
+              <div class="col-md-2">
+                <input type="number" id="product-quantity" class="form-control" placeholder="Qty" value="1">
+              </div>
+              <div class="col-md-2">
+                <button id="add-product-btn" class="btn btn-add w-100">Add</button>
+              </div>
+            </div>
+            
+            <div class="payment-section mt-4">
+              <h5>Payment</h5>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <input type="number" id="amount-paid" class="form-control" placeholder="Amount Paid">
+                </div>
+                <div class="col-md-6">
+                  <input type="text" id="change-due" class="form-control" placeholder="Change Due" readonly>
+                </div>
+              </div>
+              
+              <div class="row mb-3">
+                <div class="col-12">
+                  <button class="btn payment-btn cash-btn" data-method="Cash">Cash</button>
+                  <button class="btn payment-btn upi-btn" data-method="UPI">UPI</button>
+                  <button class="btn payment-btn card-btn" data-method="Card">Card</button>
+                </div>
+              </div>
+              
+              <button id="print-bill-btn" class="btn btn-print w-100 mt-2">Print Bill</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">Saved Bills</h5>
+          </div>
+          <div class="card-body">
+            <a href="saved-bills.html" class="btn btn-outline-primary w-100">View Saved Bills</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bill Receipt Modal -->
+  <div class="modal fade" id="billModal" tabindex="-1" aria-labelledby="billModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="billModalLabel">Bill Receipt</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="bill-receipt">
+          <!-- Receipt content will be generated here -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="print-receipt">Print</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Elements
+      const productTable = document.getElementById('product-table');
+      const productNameInput = document.getElementById('product-name');
+      const productPriceInput = document.getElementById('product-price');
+      const productQuantityInput = document.getElementById('product-quantity');
+      const addProductBtn = document.getElementById('add-product-btn');
+      const totalAmountSpan = document.getElementById('total-amount');
+      const amountPaidInput = document.getElementById('amount-paid');
+      const changeDueInput = document.getElementById('change-due');
+      const printBillBtn = document.getElementById('print-bill-btn');
+      const paymentButtons = document.querySelectorAll('.payment-btn');
+      const billModal = new bootstrap.Modal(document.getElementById('billModal'));
+      const billReceipt = document.getElementById('bill-receipt');
+      const printReceiptBtn = document.getElementById('print-receipt');
+      
+      // Variables
+      let products = [];
+      let total = 0;
+      let selectedPaymentMethod = null;
+      
+      // Initialize from localStorage if available
+      const storedProducts = localStorage.getItem('currentSale');
+      if (storedProducts) {
+        products = JSON.parse(storedProducts);
+        renderProductTable();
+        calculateTotal();
+      }
+      
+      // Add product
+      addProductBtn.addEventListener('click', () => {
+        const name = productNameInput.value.trim();
+        const price = parseFloat(productPriceInput.value);
+        const quantity = parseInt(productQuantityInput.value);
+        
+        if (!name) {
+          alert('Please enter product name');
+          return;
+        }
+        
+        if (isNaN(price) || price <= 0) {
+          alert('Please enter a valid price');
+          return;
+        }
+        
+        if (isNaN(quantity) || quantity <= 0) {
+          alert('Please enter a valid quantity');
+          return;
+        }
+        
+        const product = {
+          name,
+          price,
+          quantity
+        };
+        
+        products.push(product);
+        
+        // Save to localStorage
+        localStorage.setItem('currentSale', JSON.stringify(products));
+        
+        // Clear inputs
+        productNameInput.value = '';
+        productPriceInput.value = '';
+        productQuantityInput.value = '1';
+        
+        renderProductTable();
+        calculateTotal();
+      });
+      
+      // Calculate total
+      function calculateTotal() {
+        total = products.reduce((sum, product) => sum + (product.price * product.quantity), 0);
+        totalAmountSpan.textContent = total.toFixed(2);
+      }
+      
+      // Render product table
+      function renderProductTable() {
+        productTable.innerHTML = '';
+        
+        if (products.length === 0) {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td colspan="4" class="text-center py-4 text-muted">No products added yet</td>
+          `;
+          productTable.appendChild(row);
+          return;
+        }
+        
+        products.forEach((product, index) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${product.name}</td>
+            <td>${product.price.toFixed(2)}</td>
+            <td>${product.quantity}</td>
+            <td>${(product.price * product.quantity).toFixed(2)}</td>
+          `;
+          productTable.appendChild(row);
+        });
+      }
+      
+      // Amount paid input event
+      amountPaidInput.addEventListener('input', () => {
+        const amountPaid = parseFloat(amountPaidInput.value);
+        
+        if (!isNaN(amountPaid) && amountPaid >= total) {
+          const changeDue = amountPaid - total;
+          changeDueInput.value = changeDue.toFixed(2);
+        } else {
+          changeDueInput.value = '';
+        }
+      });
+      
+      // Payment method selection
+      paymentButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          // Clear previous selection
+          paymentButtons.forEach(btn => {
+            btn.classList.remove('active');
+          });
+          
+          // Select current
+          button.classList.add('active');
+          selectedPaymentMethod = button.getAttribute('data-method');
+        });
+      });
+      
+      // Print bill
+      printBillBtn.addEventListener('click', () => {
+        if (products.length === 0) {
+          alert('Add at least one product to the bill');
+          return;
+        }
+        
+        if (!selectedPaymentMethod) {
+          alert('Please select a payment method');
+          return;
+        }
+        
+        if (selectedPaymentMethod === 'Cash') {
+          const amountPaid = parseFloat(amountPaidInput.value);
+          if (isNaN(amountPaid) || amountPaid < total) {
+            alert('Amount paid must be greater than or equal to the total');
+            return;
+          }
+        }
+        
+        // Generate bill
+        generateBillReceipt();
+        
+        // Show modal
+        billModal.show();
+        
+        // Save bill to localStorage
+        saveBill();
+      });
+      
+      // Generate bill receipt
+      function generateBillReceipt() {
+        const date = new Date().toLocaleDateString();
+        const time = new Date().toLocaleTimeString();
+        
+        let receiptHTML = `
+          <div class="text-center mb-3">
+            <h4>SALES RECEIPT</h4>
+            <p>Date: ${date} | Time: ${time}</p>
+          </div>
+          <div class="mb-3">
+            <p><strong>Customer:</strong> Walk-in Customer</p>
+            <p><strong>Payment Method:</strong> ${selectedPaymentMethod}</p>
+          </div>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+            `;
+
+        
+        products.forEach(product => {
+          receiptHTML += `
+            <tr>
+              <td>${product.name}</td>
+              <td>${product.price.toFixed(2)}</td>
+              <td>${product.quantity}</td>
+              <td>${(product.price * product.quantity).toFixed(2)}</td>
+            </tr>
+          `;
+        });
+        
+        receiptHTML += `
+            </tbody>
+          </table>
+          <div class="text-end">
+            <p><strong>Total Amount:</strong> ${total.toFixed(2)} ₹</p>
+        `;
+        
+        if (selectedPaymentMethod === 'Cash') {
+          const amountPaid = parseFloat(amountPaidInput.value);
+          const changeDue = amountPaid - total;
+          
+          receiptHTML += `
+            <p><strong>Amount Paid:</strong> ${amountPaid.toFixed(2)} ₹</p>
+            <p><strong>Change Due:</strong> ${changeDue.toFixed(2)} ₹</p>
+          `;
+        }
+        
+        receiptHTML += `
+          </div>
+          <div class="text-center mt-4">
+            <p>Thank you for your purchase!</p>
+          </div>
+        `;
+        
+        billReceipt.innerHTML = receiptHTML;
+      }
+      
+      // Save bill to localStorage
+      function saveBill() {
+        const savedBills = localStorage.getItem('bills') ? JSON.parse(localStorage.getItem('bills')) : [];
+        
+        const newBill = {
+          id: savedBills.length > 0 ? Math.max(...savedBills.map(b => b.id)) + 1 : 1,
+          date: new Date().toISOString().split('T')[0],
+          customerName: 'Walk-in Customer',
+          totalAmount: total,
+          status: 'Paid',
+          products: [...products],
+          paymentMethod: selectedPaymentMethod,
+          amountPaid: selectedPaymentMethod === 'Cash' ? parseFloat(amountPaidInput.value) : undefined,
+          changeDue: selectedPaymentMethod === 'Cash' ? parseFloat(changeDueInput.value) : undefined
+        };
+        
+        savedBills.push(newBill);
+        localStorage.setItem('bills', JSON.stringify(savedBills));
+        
+        // Clear current sale
+        products = [];
+        localStorage.removeItem('currentSale');
+        renderProductTable();
+        calculateTotal();
+        amountPaidInput.value = '';
+        changeDueInput.value = '';
+        selectedPaymentMethod = null;
+        
+        // Clear payment method selection
+        paymentButtons.forEach(btn => {
+          btn.classList.remove('active');
+        });
+      }
+      
+      // Print receipt
+      printReceiptBtn.addEventListener('click', () => {
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write('<html><head><title>Bill Receipt</title>');
+        printWindow.document.write('<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write('<div class="container py-4">');
+        printWindow.document.write(billReceipt.innerHTML);
+        printWindow.document.write('</div></body></html>');
+        printWindow.document.close();
+        
+        setTimeout(() => {
+          printWindow.print();
+        }, 500);
+      });
+    });
+  </script>
+</body>
+</html>

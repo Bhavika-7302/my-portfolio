@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+<title> Focus and Blur events </title>
+</head>
+<body>
+<h1> Focus and Blur </h1>
+Email:
+<input type="text" id=txt1>
+<span id="span1" style="color:gray; display:none"> use gmail only </span>
+<script>
+document.getElementById("txt1").addEventListener("focus",fun1);
+function fun1()
+{
+document.getElementById("span1").style.display="inline";
+}
+document.getElementById("txt1").addEventListener("blur", fun2);
+function fun2()
+{
+document.getElementById("span1").style.display="none";
+}
+</script>
+</body>
+</html>

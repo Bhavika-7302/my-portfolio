@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+<title> keypress event numbers </title>
+</head>
+<body>
+<h1> Numbers only </h1>
+<input type="text" id=txt1>
+<script>
+document.getElementById("txt1").addEventListener("keypress",fun1);
+function fun1()
+{
+var ch=event.which;
+console.log(ch);
+if(!((ch>=48 && ch<=57) || (ch==8) || (ch==0)))
+{
+event.preventDefault();
+}
+}
+</script>
+</body>
+</html>

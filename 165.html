@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Radio buttons</title>
+    </head>
+    <style>
+        #div1{
+            color:blue;
+        }
+    </style>
+    <body>
+        <h1>Radio buttons</h1>
+        <form>          
+            <input type="radio" id="rb1" name="group" checked="checked">
+            <label for="rb1">Small</label>
+            <br>
+            <input type="radio" id="rb2" name="group" checked="checked">
+            <label for="rb2">Medium</label>
+            <br>
+            <input type="radio" id="rb3" name="group" checked="checked">
+            <label for="rb3">Large</label>
+            <br>
+            <div id="div1" style="font-size: 20px;">
+                <p>Radio buttons are used to select one option from a group of options.</p>
+            </div>
+        </form>
+        <script>
+            document.getElementById("rb1").addEventListener("change",fun1);
+            document.getElementById("rb2").addEventListener("change",fun1);
+            document.getElementById("rb3").addEventListener("change",fun1);
+            function fun1(){
+                if(document.getElementById("rb1").checked){
+                    document.getElementById("div1").style.fontSize = "20px";
+                    }
+                else if(document.getElementById("rb2").checked){
+                    document.getElementById("div1").style.fontSize = "35px";
+                    }            
+                else if(document.getElementById("rb3").checked){
+                    document.getElementById("div1").style.fontSize = "50px";
+                    }
+                }
+
+        </script>
+        
+    </body>
+
+</html>

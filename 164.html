@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+<title> change event with checkbox </title>
+</head>
+<body>
+<h1> change - Checkbox </h1>
+Source Text:
+<input type="text" id=txt1>
+<br><br>
+Destination Text:
+<input type="text" id=txt2>
+<br><br>
+Checkbox:
+<input type="checkbox" id="chk1">
+<script>
+document.getElementById("txt1").addEventListener("change",fun1);
+function fun1()
+{
+document.getElementById("txt2").value=document.getElementById("txt1").value;
+}
+</script>
+</body>
+</html>
